@@ -8,7 +8,7 @@ import { Menu, X, ChevronDown } from "lucide-react";
 
 const aboutSubmenu = [
   { label: "Our Company", href: "/about-us/our-company" },
-  { label: "Mission, Vision & Core Values", href: "/#about" },
+  { label: "Mission, Vision & Core Values", href: "/about-us/mission-vision-values" },
   { label: "Our Team", href: "/#about" },
 ];
 
