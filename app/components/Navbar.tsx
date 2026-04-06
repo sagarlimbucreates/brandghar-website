@@ -9,7 +9,7 @@ import { Menu, X, ChevronDown } from "lucide-react";
 const aboutSubmenu = [
   { label: "Our Company", href: "/about-us/our-company" },
   { label: "Mission, Vision & Core Values", href: "/about-us/mission-vision-values" },
-  { label: "Our Team", href: "/#about" },
+  { label: "Our Team", href: "/about-us/our-team" },
 ];
 
 const serviceSubmenu = [
@@ -98,9 +98,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          <a href="/#work" className="text-[15px] font-normal text-black hover:text-accent transition-colors duration-200">
-            Work
-          </a>
           <a href="/#blog" className="text-[15px] font-normal text-black hover:text-accent transition-colors duration-200">
             Blog
           </a>
@@ -215,9 +212,6 @@ export default function Navbar() {
                 )}
               </AnimatePresence>
 
-              <a href="/#work" className="py-2.5 text-black hover:text-accent transition-colors font-normal" onClick={() => setMobileOpen(false)}>
-                Work
-              </a>
               <a href="/#blog" className="py-2.5 text-black hover:text-accent transition-colors font-normal" onClick={() => setMobileOpen(false)}>
                 Blog
               </a>
