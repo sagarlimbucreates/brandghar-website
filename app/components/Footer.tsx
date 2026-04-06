@@ -11,8 +11,8 @@ const serviceLinks = [
 ];
 
 const companyLinks = [
-  { label: "About", href: "#about" },
-  { label: "Work", href: "#work" },
+  { label: "About", href: "/#about" },
+  { label: "Work", href: "/#work" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -44,7 +44,7 @@ export default function Footer() {
               {serviceLinks.map((link) => (
                 <li key={link}>
                   <a
-                    href="#services"
+                    href="/#services"
                     className="text-white/60 text-sm hover:text-accent transition-colors"
                   >
                     {link}

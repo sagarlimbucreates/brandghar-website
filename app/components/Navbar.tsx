@@ -8,17 +8,17 @@ import { Menu, X, ChevronDown } from "lucide-react";
 
 const aboutSubmenu = [
   { label: "Our Company", href: "/about-us/our-company" },
-  { label: "Mission, Vision & Core Values", href: "#about" },
-  { label: "Our Team", href: "#about" },
+  { label: "Mission, Vision & Core Values", href: "/#about" },
+  { label: "Our Team", href: "/#about" },
 ];
 
 const serviceSubmenu = [
-  { label: "Social Media Mastery", href: "#services" },
-  { label: "Influencer Partnerships", href: "#services" },
-  { label: "Strategic Ad Placements", href: "#services" },
-  { label: "Search Engine Optimization", href: "#services" },
-  { label: "Brand Identity & Graphics Design", href: "#services" },
-  { label: "Website Development", href: "#services" },
+  { label: "Social Media Mastery", href: "/#services" },
+  { label: "Influencer Partnerships", href: "/#services" },
+  { label: "Strategic Ad Placements", href: "/#services" },
+  { label: "Search Engine Optimization", href: "/#services" },
+  { label: "Brand Identity & Graphics Design", href: "/#services" },
+  { label: "Website Development", href: "/#services" },
 ];
 
 export default function Navbar() {
@@ -98,20 +98,20 @@ export default function Navbar() {
             </div>
           </div>
 
-          <a href="#work" className="text-[15px] font-normal text-black hover:text-accent transition-colors duration-200">
+          <a href="/#work" className="text-[15px] font-normal text-black hover:text-accent transition-colors duration-200">
             Work
           </a>
-          <a href="#blog" className="text-[15px] font-normal text-black hover:text-accent transition-colors duration-200">
+          <a href="/#blog" className="text-[15px] font-normal text-black hover:text-accent transition-colors duration-200">
             Blog
           </a>
-          <a href="#contact" className="text-[15px] font-normal text-black hover:text-accent transition-colors duration-200">
+          <a href="/#contact" className="text-[15px] font-normal text-black hover:text-accent transition-colors duration-200">
             Contact
           </a>
         </div>
 
         {/* CTA */}
         <a
-          href="#contact"
+          href="/#contact"
           className="hidden md:inline-block bg-accent text-white text-sm font-medium px-7 py-3 rounded-[4px] hover:bg-accent-hover transition-colors duration-300"
         >
           Get a Quote
@@ -215,17 +215,17 @@ export default function Navbar() {
                 )}
               </AnimatePresence>
 
-              <a href="#work" className="py-2.5 text-black hover:text-accent transition-colors font-normal" onClick={() => setMobileOpen(false)}>
+              <a href="/#work" className="py-2.5 text-black hover:text-accent transition-colors font-normal" onClick={() => setMobileOpen(false)}>
                 Work
               </a>
-              <a href="#blog" className="py-2.5 text-black hover:text-accent transition-colors font-normal" onClick={() => setMobileOpen(false)}>
+              <a href="/#blog" className="py-2.5 text-black hover:text-accent transition-colors font-normal" onClick={() => setMobileOpen(false)}>
                 Blog
               </a>
-              <a href="#contact" className="py-2.5 text-black hover:text-accent transition-colors font-normal" onClick={() => setMobileOpen(false)}>
+              <a href="/#contact" className="py-2.5 text-black hover:text-accent transition-colors font-normal" onClick={() => setMobileOpen(false)}>
                 Contact
               </a>
               <a
-                href="#contact"
+                href="/#contact"
                 className="bg-accent text-white text-sm font-medium px-6 py-3 text-center rounded-[4px] hover:bg-accent-hover transition-colors mt-3"
                 onClick={() => setMobileOpen(false)}
               >
