@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown } from "lucide-react";
 
 const aboutSubmenu = [
-  { label: "Our Company", href: "#about" },
+  { label: "Our Company", href: "/about-us/our-company" },
   { label: "Mission, Vision & Core Values", href: "#about" },
   { label: "Our Team", href: "#about" },
 ];
@@ -29,7 +30,7 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 bg-white font-sans shadow-[0_1px_12px_rgba(0,0,0,0.06)]">
       <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20 flex items-center justify-between h-16 md:h-20">
         {/* Logo */}
-        <a href="#home" className="shrink-0">
+        <Link href="/" className="shrink-0">
           <Image
             src="/medias/logo.jpeg"
             alt="The Brand Ghar"
@@ -38,13 +39,13 @@ export default function Navbar() {
             className="h-12 md:h-14 w-auto object-contain"
             priority
           />
-        </a>
+        </Link>
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-8">
-          <a href="#home" className="text-[15px] font-normal text-black hover:text-accent transition-colors duration-200">
+          <Link href="/" className="text-[15px] font-normal text-black hover:text-accent transition-colors duration-200">
             Home
-          </a>
+          </Link>
           {/* About dropdown */}
           <div className="relative group/about">
             <button className="flex items-center gap-1 text-[15px] font-normal text-black hover:text-accent transition-colors duration-200">
@@ -53,15 +54,25 @@ export default function Navbar() {
             </button>
             <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 opacity-0 invisible group-hover/about:opacity-100 group-hover/about:visible transition-all duration-200">
               <div className="bg-white shadow-[0_10px_40px_rgba(0,0,0,0.1)] py-2 min-w-[260px] rounded-[4px]">
-                {aboutSubmenu.map((item) => (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    className="block px-6 py-2.5 text-[13px] text-black/70 hover:text-accent hover:bg-[#FFE5E5] hover:pl-8 border-l-2 border-transparent hover:border-accent transition-all duration-200"
-                  >
-                    {item.label}
-                  </a>
-                ))}
+                {aboutSubmenu.map((item) =>
+                  item.href.startsWith("/") ? (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      className="block px-6 py-2.5 text-[13px] text-black/70 hover:text-accent hover:bg-[#FFE5E5] hover:pl-8 border-l-2 border-transparent hover:border-accent transition-all duration-200"
+                    >
+                      {item.label}
+                    </Link>
+                  ) : (
+                    <a
+                      key={item.label}
+                      href={item.href}
+                      className="block px-6 py-2.5 text-[13px] text-black/70 hover:text-accent hover:bg-[#FFE5E5] hover:pl-8 border-l-2 border-transparent hover:border-accent transition-all duration-200"
+                    >
+                      {item.label}
+                    </a>
+                  )
+                )}
               </div>
             </div>
           </div>
@@ -126,9 +137,9 @@ export default function Navbar() {
             className="md:hidden bg-white border-b border-border overflow-hidden"
           >
             <div className="px-6 py-6 flex flex-col gap-1">
-              <a href="#home" className="py-2.5 text-black hover:text-accent transition-colors font-normal" onClick={() => setMobileOpen(false)}>
+              <Link href="/" className="py-2.5 text-black hover:text-accent transition-colors font-normal" onClick={() => setMobileOpen(false)}>
                 Home
-              </a>
+              </Link>
               {/* Mobile About accordion */}
               <button
                 className="flex items-center justify-between py-2.5 text-black hover:text-accent transition-colors font-normal w-full text-left"
@@ -146,16 +157,27 @@ export default function Navbar() {
                     className="overflow-hidden"
                   >
                     <div className="pl-4 ml-1 flex flex-col">
-                      {aboutSubmenu.map((item) => (
-                        <a
-                          key={item.label}
-                          href={item.href}
-                          className="py-2 text-sm text-black/50 hover:text-accent hover:pl-2 transition-all duration-200"
-                          onClick={() => setMobileOpen(false)}
-                        >
-                          {item.label}
-                        </a>
-                      ))}
+                      {aboutSubmenu.map((item) =>
+                        item.href.startsWith("/") ? (
+                          <Link
+                            key={item.label}
+                            href={item.href}
+                            className="py-2 text-sm text-black/50 hover:text-accent hover:pl-2 transition-all duration-200"
+                            onClick={() => setMobileOpen(false)}
+                          >
+                            {item.label}
+                          </Link>
+                        ) : (
+                          <a
+                            key={item.label}
+                            href={item.href}
+                            className="py-2 text-sm text-black/50 hover:text-accent hover:pl-2 transition-all duration-200"
+                            onClick={() => setMobileOpen(false)}
+                          >
+                            {item.label}
+                          </a>
+                        )
+                      )}
                     </div>
                   </motion.div>
                 )}
