@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Syne, DM_Sans, JetBrains_Mono } from "next/font/google";
+import TopBar from "./components/TopBar";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import "./globals.css";
 
 const syne = Syne({
@@ -40,7 +43,10 @@ export default function RootLayout({
       className={`${syne.variable} ${dmSans.variable} ${jetbrainsMono.variable} antialiased`}
     >
       <body className="min-h-screen bg-white text-text-primary font-sans">
-        {children}
+        <TopBar />
+        <Navbar />
+        <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );

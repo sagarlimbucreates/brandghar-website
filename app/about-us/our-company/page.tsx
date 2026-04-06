@@ -4,9 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ChevronRight, Target, Users, Zap, Award } from "lucide-react";
-import TopBar from "../../components/TopBar";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 
 const fadeUp = {
   initial: { opacity: 0, y: 40 },
@@ -45,11 +42,7 @@ const reasons = [
 export default function OurCompanyPage() {
   return (
     <>
-      <TopBar />
-      <Navbar />
-
-      <main className="bg-white">
-        {/* Breadcrumb */}
+      {/* Breadcrumb */}
         <div className="bg-off-white border-b border-border">
           <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20 py-4">
             <nav className="flex items-center gap-2 text-sm font-sans">
@@ -196,9 +189,6 @@ export default function OurCompanyPage() {
             </div>
           </div>
         </section>
-      </main>
-
-      <Footer />
     </>
   );
 }
