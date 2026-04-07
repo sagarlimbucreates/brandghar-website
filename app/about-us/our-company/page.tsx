@@ -61,7 +61,7 @@ export default function OurCompanyPage() {
         </div>
 
         {/* Our Story Section */}
-        <section className="py-20 md:py-28">
+        <section className="pt-10 md:pt-14 pb-10 md:pb-14">
           <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
             <motion.span
               {...fadeUp}
@@ -70,7 +70,7 @@ export default function OurCompanyPage() {
               Our Story
             </motion.span>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
               {/* Left — Photo */}
               <motion.div
                 {...fadeUp}
@@ -78,7 +78,7 @@ export default function OurCompanyPage() {
               >
                 <div className="relative aspect-[4/3] bg-dark rounded-[4px] overflow-hidden">
                   <Image
-                    src="/medias/logo-cropped.png"
+                    src="/medias/our-story.png"
                     alt="The Brandghar team"
                     fill
                     className="object-cover"
@@ -86,7 +86,7 @@ export default function OurCompanyPage() {
                   {/* Accent corner decoration */}
                   <div className="absolute bottom-0 left-0 w-20 h-20 bg-accent/90 flex items-center justify-center">
                     <span className="text-white font-mono text-lg font-medium">
-                      Est. 2023
+                      Est. 2025
                     </span>
                   </div>
                 </div>
@@ -104,39 +104,76 @@ export default function OurCompanyPage() {
 
                 <div className="space-y-5 text-text-secondary leading-[1.7] font-sans">
                   <p>
-                    Brandghar was born from a simple belief: every brand has a
-                    story worth telling, and the digital world is the stage where
-                    that story should shine. Founded in Kathmandu in 2023, we
-                    started as a small team of passionate marketers and designers
-                    who were tired of seeing cookie-cutter campaigns that failed
-                    to capture what makes each brand unique.
+                    Founded in Kathmandu in 2025, Brandghar was built on one
+                    mission — to make great marketing accessible to every
+                    ambitious business ready to grow. We bridge creative
+                    storytelling with data-driven strategy, helping brands
+                    stand out and scale in the digital space.
                   </p>
                   <p>
-                    From our early days working out of a cramped co-working
-                    space, we set out to bridge the gap between creative
-                    storytelling and data-driven strategy. We believed that great
-                    marketing shouldn&apos;t be a luxury reserved for big
-                    corporations — it should be accessible to every ambitious
-                    business ready to grow.
-                  </p>
-                  <p>
-                    Today, Brandghar has grown into a full-service digital
-                    marketing agency serving clients across Nepal and beyond. Our
-                    team of strategists, designers, developers, and content
-                    creators work together to deliver campaigns that don&apos;t
-                    just look good — they drive real, measurable results. From
-                    Meta Ads and SEO to brand identity and web development,
-                    we&apos;ve helped dozens of brands find their voice and scale
-                    their presence in the digital landscape.
-                  </p>
-                  <p>
-                    But what hasn&apos;t changed is our core philosophy: we treat
-                    every client&apos;s brand as if it were our own. That means
-                    no shortcuts, no generic templates, and no vanity metrics.
-                    Just honest, hard-working marketing that moves the needle.
+                    Today, we&apos;re a full-service digital marketing agency
+                    delivering everything from Meta Ads and SEO to brand
+                    identity and web development. Our team treats every
+                    client&apos;s brand as their own — no shortcuts, no vanity
+                    metrics, just honest marketing that drives real results.
                   </p>
                 </div>
               </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Our Clients Section */}
+        <section className="py-12 md:py-16 bg-off-white">
+          <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
+            <motion.span
+              {...fadeUp}
+              className="block text-xs font-semibold uppercase tracking-[0.12em] text-accent font-sans mb-4 text-center"
+            >
+              Our Clients
+            </motion.span>
+            <motion.h2
+              {...fadeUp}
+              transition={{ ...fadeUp.transition, delay: 0.1 }}
+              className="text-3xl md:text-4xl lg:text-[2.5rem] font-sans font-bold text-text-primary leading-[1.12] tracking-tight mb-6 text-center"
+            >
+              Brands That Trust{" "}
+              <span className="text-accent">Brandghar</span>
+            </motion.h2>
+            <motion.p
+              {...fadeUp}
+              transition={{ ...fadeUp.transition, delay: 0.15 }}
+              className="text-text-secondary max-w-xl mx-auto mb-16 leading-[1.7] font-sans text-center"
+            >
+              We&apos;re proud to work with amazing brands across diverse
+              industries.
+            </motion.p>
+
+            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-4">
+              {[
+                { src: "/medias/clients/Logo.png", alt: "Client" },
+                { src: "/medias/clients/logo-aarambha.webp", alt: "Aarambha" },
+                { src: "/medias/clients/logo-ant.jpg", alt: "ANT" },
+                { src: "/medias/clients/logo-lashes.png", alt: "Lashes" },
+                { src: "/medias/clients/logo-neomoney.svg", alt: "Neo Money Transfer" },
+                { src: "/medias/clients/logo-pcps.webp", alt: "PCPS" },
+                { src: "/medias/clients/logo-shatakshee.webp", alt: "Shatakshee" },
+              ].map((client, i) => (
+                <motion.div
+                  key={client.alt}
+                  {...fadeUp}
+                  transition={{ ...fadeUp.transition, delay: 0.08 * (i + 1) }}
+                  className="bg-white border border-border rounded-[4px] p-4 flex items-center justify-center aspect-square hover:border-accent/20 hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)] transition-all duration-300"
+                >
+                  <Image
+                    src={client.src}
+                    alt={client.alt}
+                    width={120}
+                    height={120}
+                    className="w-full h-full object-contain"
+                  />
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
