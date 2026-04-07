@@ -499,7 +499,7 @@ export default function BrandIdentityGraphicsDesignPage() {
               href="/#contact"
               className="inline-flex items-center gap-2 bg-white text-accent font-sans font-bold px-8 py-4 rounded-[4px] hover:bg-off-white transition-colors duration-300 text-sm"
             >
-              Start Your Brand Identity
+              Connect with Us
               <ArrowUpRight size={16} />
             </a>
             <a

@@ -35,7 +35,7 @@ export default function CTABanner() {
             href="#"
             className="group inline-flex items-center gap-2 bg-white text-black font-semibold px-8 py-4 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.2)] transition-all duration-300"
           >
-            Start a Project
+            Connect with Us
             <ArrowRight
               size={18}
               className="group-hover:translate-x-1.5 transition-transform"
