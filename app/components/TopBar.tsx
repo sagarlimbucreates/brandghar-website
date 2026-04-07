@@ -25,7 +25,7 @@ export default function TopBar() {
         {/* Social — icons */}
         <div className="hidden sm:flex items-center gap-4">
           <a
-            href="https://facebook.com"
+            href="https://www.facebook.com/thebrandghar"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Facebook"
@@ -36,7 +36,7 @@ export default function TopBar() {
             </svg>
           </a>
           <a
-            href="https://instagram.com"
+            href="https://www.instagram.com/thebrandghar?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
@@ -47,7 +47,7 @@ export default function TopBar() {
             </svg>
           </a>
           <a
-            href="https://tiktok.com"
+            href="https://www.tiktok.com/@the.brand.ghar"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="TikTok"
@@ -55,6 +55,17 @@ export default function TopBar() {
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
               <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.48v-7.13a8.16 8.16 0 005.58 2.2V11.3a4.85 4.85 0 01-3.77-1.84V6.69h3.77z" />
+            </svg>
+          </a>
+          <a
+            href="https://www.linkedin.com/company/brandghar/?viewAsMember=true"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+            className="hover:text-accent transition-colors"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
             </svg>
           </a>
         </div>

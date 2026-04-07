@@ -78,7 +78,7 @@ export default function OurCompanyPage() {
               >
                 <div className="relative aspect-[4/3] bg-dark rounded-[4px] overflow-hidden">
                   <Image
-                    src="/medias/logo.jpeg"
+                    src="/medias/logo-cropped.png"
                     alt="The Brandghar team"
                     fill
                     className="object-cover"

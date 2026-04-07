@@ -17,8 +17,8 @@ const serviceSubmenu = [
   { label: "Influencer Partnerships", href: "/services/influencer-partnerships" },
   { label: "Strategic Ad Placements", href: "/services/strategic-ad-placements" },
   { label: "Search Engine Optimization", href: "/services/search-engine-optimization" },
-  { label: "Brand Identity & Graphics Design", href: "/#services" },
-  { label: "Website Development", href: "/#services" },
+  { label: "Brand Identity & Graphics Design", href: "/services/brand-identity-graphics-design" },
+  { label: "Website Development", href: "/services/website-development" },
 ];
 
 export default function Navbar() {
@@ -32,11 +32,11 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="shrink-0">
           <Image
-            src="/medias/logo.jpeg"
+            src="/medias/logo-cropped.png"
             alt="The Brand Ghar"
-            width={160}
-            height={56}
-            className="h-12 md:h-14 w-auto object-contain"
+            width={200}
+            height={70}
+            className="h-12 md:h-16 w-auto object-contain"
             priority
           />
         </Link>
@@ -98,21 +98,21 @@ export default function Navbar() {
             </div>
           </div>
 
-          <a href="/#blog" className="text-[15px] font-normal text-black hover:text-accent transition-colors duration-200">
+          <Link href="/blog" className="text-[15px] font-normal text-black hover:text-accent transition-colors duration-200">
             Blog
-          </a>
-          <a href="/#contact" className="text-[15px] font-normal text-black hover:text-accent transition-colors duration-200">
+          </Link>
+          <Link href="/contact" className="text-[15px] font-normal text-black hover:text-accent transition-colors duration-200">
             Contact
-          </a>
+          </Link>
         </div>
 
         {/* CTA */}
-        <a
-          href="/#contact"
+        <Link
+          href="/contact"
           className="hidden md:inline-block bg-accent text-white text-sm font-medium px-7 py-3 rounded-[4px] hover:bg-accent-hover transition-colors duration-300"
         >
           Get a Quote
-        </a>
+        </Link>
 
         {/* Mobile toggle */}
         <button
@@ -212,19 +212,19 @@ export default function Navbar() {
                 )}
               </AnimatePresence>
 
-              <a href="/#blog" className="py-2.5 text-black hover:text-accent transition-colors font-normal" onClick={() => setMobileOpen(false)}>
+              <Link href="/blog" className="py-2.5 text-black hover:text-accent transition-colors font-normal" onClick={() => setMobileOpen(false)}>
                 Blog
-              </a>
-              <a href="/#contact" className="py-2.5 text-black hover:text-accent transition-colors font-normal" onClick={() => setMobileOpen(false)}>
+              </Link>
+              <Link href="/contact" className="py-2.5 text-black hover:text-accent transition-colors font-normal" onClick={() => setMobileOpen(false)}>
                 Contact
-              </a>
-              <a
-                href="/#contact"
+              </Link>
+              <Link
+                href="/contact"
                 className="bg-accent text-white text-sm font-medium px-6 py-3 text-center rounded-[4px] hover:bg-accent-hover transition-colors mt-3"
                 onClick={() => setMobileOpen(false)}
               >
                 Get a Quote
-              </a>
+              </Link>
             </div>
           </motion.div>
         )}
