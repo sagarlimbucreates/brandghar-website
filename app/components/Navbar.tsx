@@ -13,10 +13,10 @@ const aboutSubmenu = [
 ];
 
 const serviceSubmenu = [
-  { label: "Social Media Mastery", href: "/#services" },
-  { label: "Influencer Partnerships", href: "/#services" },
-  { label: "Strategic Ad Placements", href: "/#services" },
-  { label: "Search Engine Optimization", href: "/#services" },
+  { label: "Social Media Mastery", href: "/services/social-media-mastery" },
+  { label: "Influencer Partnerships", href: "/services/influencer-partnerships" },
+  { label: "Strategic Ad Placements", href: "/services/strategic-ad-placements" },
+  { label: "Search Engine Optimization", href: "/services/search-engine-optimization" },
   { label: "Brand Identity & Graphics Design", href: "/#services" },
   { label: "Website Development", href: "/#services" },
 ];
