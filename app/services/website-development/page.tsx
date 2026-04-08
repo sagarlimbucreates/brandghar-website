@@ -41,6 +41,7 @@ const problems = [
   "Not mobile-friendly",
   "No conversions or inquiries",
   "Poor user experience (UX)",
+  "Hard to update or manage content",
 ];
 
 const coreServices = [
@@ -164,7 +165,7 @@ export default function WebsiteDevelopmentPage() {
       </div>
 
       {/* Hero */}
-      <section className="py-20 md:py-28">
+      <section className="py-10 md:py-14">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
           <motion.span
             {...fadeUp}
@@ -220,7 +221,7 @@ export default function WebsiteDevelopmentPage() {
       </section>
 
       {/* Problems */}
-      <section className="py-20 md:py-28 bg-off-white">
+      <section className="py-10 md:py-14 bg-off-white">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
           <motion.span
             {...fadeUp}
@@ -264,7 +265,7 @@ export default function WebsiteDevelopmentPage() {
       </section>
 
       {/* Core Services */}
-      <section className="py-20 md:py-28">
+      <section className="py-10 md:py-14">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
           <motion.span
             {...fadeUp}
@@ -312,7 +313,7 @@ export default function WebsiteDevelopmentPage() {
       </section>
 
       {/* Our Process */}
-      <section className="py-20 md:py-28 bg-dark">
+      <section className="py-10 md:py-14 bg-dark">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
           <motion.span
             {...fadeUp}
@@ -352,7 +353,7 @@ export default function WebsiteDevelopmentPage() {
       </section>
 
       {/* Types of Websites */}
-      <section className="py-20 md:py-28">
+      <section className="py-10 md:py-14">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
           <motion.span
             {...fadeUp}
@@ -389,7 +390,7 @@ export default function WebsiteDevelopmentPage() {
       </section>
 
       {/* Features */}
-      <section className="py-20 md:py-28 bg-off-white">
+      <section className="py-10 md:py-14 bg-off-white">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
           <motion.span
             {...fadeUp}
@@ -425,7 +426,7 @@ export default function WebsiteDevelopmentPage() {
       </section>
 
       {/* Results & Why Brandghar */}
-      <section className="py-20 md:py-28 bg-dark">
+      <section className="py-10 md:py-14 bg-dark">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20">
             {/* Results */}
@@ -479,7 +480,7 @@ export default function WebsiteDevelopmentPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 md:py-28 bg-accent">
+      <section className="py-10 md:py-14 bg-accent">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20 text-center">
           <motion.h2
             {...fadeUp}

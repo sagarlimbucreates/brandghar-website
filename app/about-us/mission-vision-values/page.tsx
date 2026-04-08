@@ -10,7 +10,6 @@ import {
   Rocket,
   ShieldCheck,
   Clock,
-  TrendingUp,
 } from "lucide-react";
 
 const fadeUp = {
@@ -56,12 +55,6 @@ const coreValues = [
     title: "Consistency & Discipline",
     description:
       "Success comes from consistent execution. We deliver quality work on time, every time.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Learning & Growth",
-    description:
-      "We continuously learn, test, and improve to deliver better strategies and results.",
   },
 ];
 

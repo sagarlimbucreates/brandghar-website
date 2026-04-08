@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -31,6 +32,7 @@ const problems = [
   "No clear content strategy",
   "Inconsistent branding",
   "Running ads but no results",
+  "No measurable growth or analytics tracking",
 ];
 
 const deliverables = [
@@ -132,36 +134,56 @@ export default function SocialMediaMasteryPage() {
       </div>
 
       {/* Hero Section */}
-      <section className="py-20 md:py-28">
+      <section className="py-10 md:py-14">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
-          <motion.span
-            {...fadeUp}
-            className="block text-xs font-semibold uppercase tracking-[0.12em] text-accent font-sans mb-4"
-          >
-            Our Service
-          </motion.span>
-          <motion.h1
-            {...fadeUp}
-            transition={{ ...fadeUp.transition, delay: 0.1 }}
-            className="text-3xl md:text-4xl lg:text-[2.5rem] font-sans font-bold text-text-primary leading-[1.12] tracking-tight mb-6 max-w-3xl"
-          >
-            Social Media{" "}
-            <span className="text-accent">Mastery</span>
-          </motion.h1>
-          <motion.p
-            {...fadeUp}
-            transition={{ ...fadeUp.transition, delay: 0.15 }}
-            className="text-text-secondary max-w-2xl mb-0 leading-[1.7] font-sans text-base md:text-lg"
-          >
-            A complete system designed to grow your brand, engage your audience,
-            and convert attention into revenue using strategic content, branding,
-            and performance marketing.
-          </motion.p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            {/* Left — Content */}
+            <div>
+              <motion.span
+                {...fadeUp}
+                className="block text-xs font-semibold uppercase tracking-[0.12em] text-accent font-sans mb-4"
+              >
+                Our Service
+              </motion.span>
+              <motion.h1
+                {...fadeUp}
+                transition={{ ...fadeUp.transition, delay: 0.1 }}
+                className="text-3xl md:text-4xl lg:text-[2.5rem] font-sans font-bold text-text-primary leading-[1.12] tracking-tight mb-6"
+              >
+                Social Media{" "}
+                <span className="text-accent">Mastery</span>
+              </motion.h1>
+              <motion.p
+                {...fadeUp}
+                transition={{ ...fadeUp.transition, delay: 0.15 }}
+                className="text-text-secondary leading-[1.7] font-sans text-base md:text-lg"
+              >
+                A complete system designed to grow your brand, engage your
+                audience, and convert attention into revenue using strategic
+                content, branding, and performance marketing.
+              </motion.p>
+            </div>
+
+            {/* Right — Image */}
+            <motion.div
+              {...fadeUp}
+              transition={{ ...fadeUp.transition, delay: 0.2 }}
+            >
+              <div className="relative aspect-[4/3] rounded-[16px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-border">
+                <Image
+                  src="/medias/illustrations/social-media-mastery.jpg"
+                  alt="Social Media Mastery"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Problems We Solve */}
-      <section className="py-20 md:py-28 bg-off-white">
+      <section className="py-10 md:py-14 bg-off-white">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
           <motion.span
             {...fadeUp}
@@ -181,9 +203,15 @@ export default function SocialMediaMasteryPage() {
             {problems.map((problem, i) => (
               <motion.div
                 key={problem}
-                {...fadeUp}
-                transition={{ ...fadeUp.transition, delay: 0.1 * (i + 1) }}
-                className="flex items-center gap-4 bg-white border border-border p-5 rounded-[4px]"
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{
+                  duration: 0.5,
+                  delay: 0.08 * i,
+                  ease: [0.25, 0.1, 0.25, 1],
+                }}
+                className="flex items-center gap-4 bg-white border border-border p-5 rounded-[4px] hover:border-accent/20 hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-all duration-300"
               >
                 <div className="w-9 h-9 bg-accent/10 flex items-center justify-center rounded-[4px] shrink-0">
                   <X size={16} className="text-accent" />

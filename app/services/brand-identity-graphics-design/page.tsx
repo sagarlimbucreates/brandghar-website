@@ -40,6 +40,7 @@ const problems = [
   "No clear design direction",
   "Designs that don't convert or stand out",
   "Lack of brand recognition",
+  "Generic designs that look like competitors",
 ];
 
 const coreServices = [
@@ -113,6 +114,7 @@ const deliverables = [
   "Typography system",
   "Social media templates",
   "Brand guideline document",
+  "Business card & stationery designs",
 ];
 
 const results = [
@@ -161,7 +163,7 @@ export default function BrandIdentityGraphicsDesignPage() {
       </div>
 
       {/* Hero */}
-      <section className="py-20 md:py-28">
+      <section className="py-10 md:py-14">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
           <motion.span
             {...fadeUp}
@@ -217,7 +219,7 @@ export default function BrandIdentityGraphicsDesignPage() {
       </section>
 
       {/* Problems */}
-      <section className="py-20 md:py-28 bg-off-white">
+      <section className="py-10 md:py-14 bg-off-white">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
           <motion.span
             {...fadeUp}
@@ -261,7 +263,7 @@ export default function BrandIdentityGraphicsDesignPage() {
       </section>
 
       {/* Core Services */}
-      <section className="py-20 md:py-28">
+      <section className="py-10 md:py-14">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
           <motion.span
             {...fadeUp}
@@ -309,7 +311,7 @@ export default function BrandIdentityGraphicsDesignPage() {
       </section>
 
       {/* Our Design Process */}
-      <section className="py-20 md:py-28 bg-dark">
+      <section className="py-10 md:py-14 bg-dark">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
           <motion.span
             {...fadeUp}
@@ -325,31 +327,37 @@ export default function BrandIdentityGraphicsDesignPage() {
             Our Design <span className="text-accent">Process</span>
           </motion.h2>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6 lg:gap-0">
             {processSteps.map((step, i) => (
-              <motion.div
-                key={step.title}
-                {...fadeUp}
-                transition={{ ...fadeUp.transition, delay: 0.1 * (i + 1) }}
-                className="text-center"
-              >
-                <div className="w-16 h-16 bg-accent/10 flex items-center justify-center rounded-[4px] mx-auto mb-4">
-                  <step.icon size={26} className="text-accent" />
-                </div>
-                <span className="block text-white/30 font-mono text-sm mb-2">
-                  {step.step}
-                </span>
-                <h3 className="text-sm font-sans font-bold text-white">
-                  {step.title}
-                </h3>
-              </motion.div>
+              <div key={step.title} className="flex items-center gap-0 flex-1 w-full lg:w-auto">
+                <motion.div
+                  {...fadeUp}
+                  transition={{ ...fadeUp.transition, delay: 0.1 * (i + 1) }}
+                  className="flex items-center gap-4 lg:flex-col lg:text-center lg:gap-3 flex-1"
+                >
+                  <div className="w-14 h-14 bg-accent/10 flex items-center justify-center rounded-full shrink-0">
+                    <span className="text-white font-mono font-bold text-lg">
+                      {step.step}
+                    </span>
+                  </div>
+                  <div>
+                    <step.icon size={18} className="text-accent mb-1 lg:mx-auto" />
+                    <h3 className="text-sm font-sans font-bold text-white">
+                      {step.title}
+                    </h3>
+                  </div>
+                </motion.div>
+                {i < processSteps.length - 1 && (
+                  <div className="hidden lg:block w-full h-[2px] bg-accent/30 flex-1 mx-2" />
+                )}
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* What You Get */}
-      <section className="py-20 md:py-28">
+      <section className="py-10 md:py-14">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
           <motion.span
             {...fadeUp}
@@ -384,7 +392,7 @@ export default function BrandIdentityGraphicsDesignPage() {
       </section>
 
       {/* Industries We Design For */}
-      <section className="py-20 md:py-28 bg-off-white">
+      <section className="py-10 md:py-14 bg-off-white">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
           <motion.span
             {...fadeUp}
@@ -421,7 +429,7 @@ export default function BrandIdentityGraphicsDesignPage() {
       </section>
 
       {/* Results & Why Brandghar */}
-      <section className="py-20 md:py-28 bg-dark">
+      <section className="py-10 md:py-14 bg-dark">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20">
             {/* Results */}
@@ -475,7 +483,7 @@ export default function BrandIdentityGraphicsDesignPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 md:py-28 bg-accent">
+      <section className="py-10 md:py-14 bg-accent">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20 text-center">
           <motion.h2
             {...fadeUp}

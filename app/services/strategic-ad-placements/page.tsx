@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -81,6 +82,15 @@ const coreServices = [
       "Campaign reporting",
     ],
   },
+  {
+    icon: Target,
+    title: "Campaign Consultation",
+    items: [
+      "Budget planning & allocation",
+      "Location-based ROI forecasting",
+      "Multi-channel placement strategy",
+    ],
+  },
 ];
 
 const processSteps = [
@@ -138,62 +148,77 @@ export default function StrategicAdPlacementsPage() {
       </div>
 
       {/* Hero */}
-      <section className="py-20 md:py-28">
+      <section className="py-10 md:py-14">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
-          <motion.span
-            {...fadeUp}
-            className="block text-xs font-semibold uppercase tracking-[0.12em] text-accent font-sans mb-4"
-          >
-            Our Service
-          </motion.span>
-          <motion.h1
-            {...fadeUp}
-            transition={{ ...fadeUp.transition, delay: 0.1 }}
-            className="text-3xl md:text-4xl lg:text-[2.5rem] font-sans font-bold text-text-primary leading-[1.12] tracking-tight mb-6 max-w-3xl uppercase"
-          >
-            Be Seen Where It <span className="text-accent">Matters</span>
-          </motion.h1>
-          <motion.p
-            {...fadeUp}
-            transition={{ ...fadeUp.transition, delay: 0.15 }}
-            className="text-text-secondary max-w-2xl leading-[1.7] font-sans text-base md:text-lg mb-6"
-          >
-            From streets to skylines — we strategically place your brand where
-            attention is guaranteed.
-          </motion.p>
-          <motion.p
-            {...fadeUp}
-            transition={{ ...fadeUp.transition, delay: 0.2 }}
-            className="text-text-muted max-w-2xl leading-[1.7] font-sans"
-          >
-            Strategic Ad Placement is about positioning your brand in
-            high-visibility, high-impact locations — ensuring maximum exposure,
-            recall, and real-world presence.
-          </motion.p>
-          <motion.div
-            {...fadeUp}
-            transition={{ ...fadeUp.transition, delay: 0.25 }}
-            className="flex flex-col sm:flex-row gap-4 mt-10"
-          >
-            <a
-              href="/#contact"
-              className="inline-flex items-center gap-2 bg-accent text-white font-sans font-medium px-7 py-3 rounded-[4px] hover:bg-accent-hover transition-colors duration-300 text-sm"
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            {/* Left — Content */}
+            <div>
+              <motion.span
+                {...fadeUp}
+                className="block text-xs font-semibold uppercase tracking-[0.12em] text-accent font-sans mb-4"
+              >
+                Our Service
+              </motion.span>
+              <motion.h1
+                {...fadeUp}
+                transition={{ ...fadeUp.transition, delay: 0.1 }}
+                className="text-3xl md:text-4xl lg:text-[2.5rem] font-sans font-bold text-text-primary leading-[1.12] tracking-tight mb-6 uppercase"
+              >
+                Be Seen Where It{" "}
+                <span className="text-accent">Matters</span>
+              </motion.h1>
+              <motion.p
+                {...fadeUp}
+                transition={{ ...fadeUp.transition, delay: 0.15 }}
+                className="text-text-secondary leading-[1.7] font-sans text-base md:text-lg mb-6"
+              >
+                From streets to skylines — we strategically place your brand
+                where attention is guaranteed.
+              </motion.p>
+              <motion.p
+                {...fadeUp}
+                transition={{ ...fadeUp.transition, delay: 0.2 }}
+                className="text-text-muted leading-[1.7] font-sans"
+              >
+                Strategic Ad Placement is about positioning your brand in
+                high-visibility, high-impact locations — ensuring maximum
+                exposure, recall, and real-world presence.
+              </motion.p>
+              <motion.div
+                {...fadeUp}
+                transition={{ ...fadeUp.transition, delay: 0.25 }}
+                className="mt-10"
+              >
+                <a
+                  href="/contact"
+                  className="inline-flex items-center gap-2 bg-accent text-white font-sans font-medium px-7 py-3 rounded-[4px] hover:bg-accent-hover transition-colors duration-300 text-sm"
+                >
+                  Plan Your Ad Placement
+                  <ArrowUpRight size={16} />
+                </a>
+              </motion.div>
+            </div>
+
+            {/* Right — Image */}
+            <motion.div
+              {...fadeUp}
+              transition={{ ...fadeUp.transition, delay: 0.2 }}
             >
-              Plan Your Ad Placement
-              <ArrowUpRight size={16} />
-            </a>
-            <a
-              href="/#contact"
-              className="inline-flex items-center gap-2 border-2 border-text-primary text-text-primary font-sans font-medium px-7 py-3 rounded-[4px] hover:bg-text-primary hover:text-white transition-all duration-300 text-sm"
-            >
-              Get Location Strategy
-            </a>
-          </motion.div>
+              <div className="relative aspect-[4/3] rounded-[16px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-border">
+                <Image
+                  src="/medias/illustrations/ad-placement.png"
+                  alt="Strategic Ad Placements"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Problems */}
-      <section className="py-20 md:py-28 bg-off-white">
+      <section className="py-10 md:py-14 bg-off-white">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
           <motion.span
             {...fadeUp}
@@ -237,7 +262,7 @@ export default function StrategicAdPlacementsPage() {
       </section>
 
       {/* Core Services */}
-      <section className="py-20 md:py-28">
+      <section className="py-10 md:py-14">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
           <motion.span
             {...fadeUp}
@@ -285,7 +310,7 @@ export default function StrategicAdPlacementsPage() {
       </section>
 
       {/* Our Approach */}
-      <section className="py-20 md:py-28 bg-dark">
+      <section className="py-10 md:py-14 bg-dark">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
           <motion.span
             {...fadeUp}
@@ -312,7 +337,7 @@ export default function StrategicAdPlacementsPage() {
                 <div className="w-16 h-16 bg-accent/10 flex items-center justify-center rounded-[4px] mx-auto mb-4">
                   <step.icon size={26} className="text-accent" />
                 </div>
-                <span className="block text-white/30 font-mono text-sm mb-2">
+                <span className="block text-white font-mono text-sm mb-2">
                   {step.step}
                 </span>
                 <h3 className="text-sm font-sans font-bold text-white">
@@ -325,7 +350,7 @@ export default function StrategicAdPlacementsPage() {
       </section>
 
       {/* Types of Ad Placements */}
-      <section className="py-20 md:py-28">
+      <section className="py-10 md:py-14">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
           <motion.span
             {...fadeUp}
@@ -362,7 +387,7 @@ export default function StrategicAdPlacementsPage() {
       </section>
 
       {/* Results & Why Brandghar */}
-      <section className="py-20 md:py-28 bg-off-white">
+      <section className="py-10 md:py-14 bg-off-white">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20">
             {/* Results */}
@@ -416,7 +441,7 @@ export default function StrategicAdPlacementsPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 md:py-28 bg-accent">
+      <section className="py-10 md:py-14 bg-accent">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20 text-center">
           <motion.h2
             {...fadeUp}
