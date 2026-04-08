@@ -39,6 +39,12 @@ yarn-error.log*
 # source media files
 /medias
 
+# sqlite database files (keep schema/migrations, ignore data)
+/db/brandghar.db
+/db/brandghar.db-journal
+/db/brandghar.db-wal
+/db/brandghar.db-shm
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

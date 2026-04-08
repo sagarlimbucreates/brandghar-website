@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useActionState, useEffect, useRef, useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpRight, ChevronDown } from "lucide-react";
+import { ArrowUpRight, ChevronDown, CheckCircle2, AlertCircle } from "lucide-react";
+import { submitLeadAction } from "../(marketing)/leads-actions";
 
 const services = [
   "Social Media Mastery",
@@ -55,6 +56,15 @@ function useTypingEffect(phrases: string[], typingSpeed = 50, deletingSpeed = 30
 
 export default function Hero() {
   const typedText = useTypingEffect(typingPhrases);
+  const [leadState, leadAction, leadPending] = useActionState(submitLeadAction, {});
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // Clear form after successful submission
+  useEffect(() => {
+    if (leadState.success) {
+      formRef.current?.reset();
+    }
+  }, [leadState.success]);
 
   return (
     <section id="home" className="bg-white">
@@ -147,29 +157,52 @@ export default function Hero() {
             </div>
 
             {/* Form */}
-            <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
+            <form ref={formRef} action={leadAction} className="flex flex-col gap-4">
+              <input type="hidden" name="source" value="hero_landing" />
+
+              {leadState.error && (
+                <div className="flex items-start gap-2.5 bg-[#FFF0F0] border border-accent/20 rounded-[4px] p-3">
+                  <AlertCircle size={14} className="text-accent shrink-0 mt-0.5" />
+                  <p className="text-xs text-[#CC0000] font-sans">{leadState.error}</p>
+                </div>
+              )}
+              {leadState.success && (
+                <div className="flex items-start gap-2.5 bg-[#F0F9F0] border border-[#0A7A0A]/20 rounded-[4px] p-3">
+                  <CheckCircle2 size={14} className="text-[#0A7A0A] shrink-0 mt-0.5" />
+                  <p className="text-xs text-[#0A7A0A] font-sans">{leadState.success}</p>
+                </div>
+              )}
+
               <input
                 type="text"
+                name="fullName"
                 placeholder="Full name"
                 required
-                className="w-full px-5 py-3.5 bg-off-white text-black text-sm placeholder:text-text-muted outline-none border border-transparent focus:border-accent/30 rounded-[4px] transition-all"
+                disabled={leadPending}
+                className="w-full px-5 py-3.5 bg-off-white text-black text-sm placeholder:text-text-muted outline-none border border-transparent focus:border-accent/30 rounded-[4px] transition-all disabled:opacity-60"
               />
               <input
                 type="tel"
+                name="phone"
                 placeholder="Phone number"
                 required
-                className="w-full px-5 py-3.5 bg-off-white text-black text-sm placeholder:text-text-muted outline-none border border-transparent focus:border-accent/30 rounded-[4px] transition-all"
+                disabled={leadPending}
+                className="w-full px-5 py-3.5 bg-off-white text-black text-sm placeholder:text-text-muted outline-none border border-transparent focus:border-accent/30 rounded-[4px] transition-all disabled:opacity-60"
               />
               <input
                 type="email"
+                name="email"
                 placeholder="Email address"
-                className="w-full px-5 py-3.5 bg-off-white text-black text-sm placeholder:text-text-muted outline-none border border-transparent focus:border-accent/30 rounded-[4px] transition-all"
+                disabled={leadPending}
+                className="w-full px-5 py-3.5 bg-off-white text-black text-sm placeholder:text-text-muted outline-none border border-transparent focus:border-accent/30 rounded-[4px] transition-all disabled:opacity-60"
               />
               <div className="relative">
                 <select
+                  name="service"
                   required
                   defaultValue=""
-                  className="w-full px-5 py-3.5 bg-off-white text-sm text-black appearance-none outline-none border border-transparent focus:border-accent/30 rounded-[4px] transition-all"
+                  disabled={leadPending}
+                  className="w-full px-5 py-3.5 bg-off-white text-sm text-black appearance-none outline-none border border-transparent focus:border-accent/30 rounded-[4px] transition-all disabled:opacity-60"
                 >
                   <option value="" disabled className="text-text-muted">
                     Select a service
@@ -187,9 +220,10 @@ export default function Hero() {
               </div>
               <button
                 type="submit"
-                className="w-full bg-accent text-white font-medium py-3.5 mt-1 rounded-[4px] hover:bg-accent-hover transition-colors duration-300 text-sm"
+                disabled={leadPending}
+                className="w-full bg-accent text-white font-medium py-3.5 mt-1 rounded-[4px] hover:bg-accent-hover transition-colors duration-300 text-sm disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                Get Consultation
+                {leadPending ? "Sending…" : "Get Consultation"}
               </button>
             </form>
 
