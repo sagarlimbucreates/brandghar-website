@@ -1,16 +1,33 @@
-import Database from "better-sqlite3";
-import { drizzle } from "drizzle-orm/better-sqlite3";
-import { migrate } from "drizzle-orm/better-sqlite3/migrator";
-import path from "node:path";
+import { Pool, neonConfig } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-serverless";
+import { migrate } from "drizzle-orm/neon-serverless/migrator";
+import ws from "ws";
 
-const DB_PATH = path.join(process.cwd(), "db", "brandghar.db");
-const sqlite = new Database(DB_PATH);
-sqlite.pragma("journal_mode = WAL");
-sqlite.pragma("foreign_keys = ON");
+if (typeof WebSocket === "undefined") {
+  neonConfig.webSocketConstructor = ws;
+}
 
-const db = drizzle(sqlite);
+// Migrations should run against the direct (non-pooled) endpoint when available,
+// because DDL/transactions behave better without PgBouncer in transaction mode.
+const connectionString =
+  process.env.DATABASE_URL_UNPOOLED ?? process.env.DATABASE_URL;
 
-migrate(db, { migrationsFolder: "./db/migrations" });
+if (!connectionString) {
+  throw new Error("DATABASE_URL is not set");
+}
 
-console.log("✓ migrations applied");
-sqlite.close();
+async function main() {
+  const pool = new Pool({ connectionString });
+  const db = drizzle(pool);
+
+  console.log("→ running migrations…");
+  await migrate(db, { migrationsFolder: "./db/migrations" });
+  console.log("✓ migrations applied");
+
+  await pool.end();
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

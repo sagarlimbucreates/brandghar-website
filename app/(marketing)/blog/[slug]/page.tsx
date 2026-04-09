@@ -5,6 +5,8 @@ import { and, eq, ne, desc } from "drizzle-orm";
 import { ChevronRight, ArrowLeft, ImageIcon, Clock, Calendar } from "lucide-react";
 import { db, blogPosts } from "@/db";
 
+export const dynamic = "force-dynamic";
+
 type Params = Promise<{ slug: string }>;
 
 export default async function BlogPostPage({ params }: { params: Params }) {

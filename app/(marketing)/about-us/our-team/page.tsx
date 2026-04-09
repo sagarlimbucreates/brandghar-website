@@ -2,6 +2,8 @@ import { asc, eq } from "drizzle-orm";
 import { db, teamMembers } from "@/db";
 import OurTeamClient from "./OurTeamClient";
 
+export const dynamic = "force-dynamic";
+
 export default async function OurTeamPage() {
   const rows = await db
     .select()

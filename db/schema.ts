@@ -1,48 +1,41 @@
 import { sql } from "drizzle-orm";
 import {
-  sqliteTable,
+  pgTable,
   text,
   integer,
+  boolean,
+  timestamp,
+  serial,
+  jsonb,
   primaryKey,
   index,
   uniqueIndex,
-} from "drizzle-orm/sqlite-core";
-
-// Note: SQLite doesn't have native ENUM, UUID, or INET types.
-// - UUIDs are stored as TEXT (generated via crypto.randomUUID() in app code).
-// - ENUMs are stored as TEXT with a CHECK constraint-equivalent validation at the app layer.
-// - Timestamps are stored as INTEGER (unix seconds) via `{ mode: "timestamp" }`.
+} from "drizzle-orm/pg-core";
 
 // =========================================================================
 // roles
 // =========================================================================
-export const roles = sqliteTable("roles", {
+export const roles = pgTable("roles", {
   id: text("id").primaryKey(),
   name: text("name").notNull().unique(),
   displayName: text("display_name").notNull(),
   description: text("description"),
-  isSystem: integer("is_system", { mode: "boolean" }).notNull().default(false),
-  createdAt: integer("created_at", { mode: "timestamp" })
-    .notNull()
-    .default(sql`(unixepoch())`),
-  updatedAt: integer("updated_at", { mode: "timestamp" })
-    .notNull()
-    .default(sql`(unixepoch())`),
+  isSystem: boolean("is_system").notNull().default(false),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
 // =========================================================================
 // permissions
 // =========================================================================
-export const permissions = sqliteTable(
+export const permissions = pgTable(
   "permissions",
   {
     id: text("id").primaryKey(),
     key: text("key").notNull().unique(),
     group: text("group").notNull(),
     description: text("description"),
-    createdAt: integer("created_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => ({
     groupIdx: index("permissions_group_idx").on(table.group),
@@ -52,7 +45,7 @@ export const permissions = sqliteTable(
 // =========================================================================
 // role_permissions (N:M)
 // =========================================================================
-export const rolePermissions = sqliteTable(
+export const rolePermissions = pgTable(
   "role_permissions",
   {
     roleId: text("role_id")
@@ -71,7 +64,7 @@ export const rolePermissions = sqliteTable(
 // =========================================================================
 // users
 // =========================================================================
-export const users = sqliteTable(
+export const users = pgTable(
   "users",
   {
     id: text("id").primaryKey(),
@@ -82,17 +75,13 @@ export const users = sqliteTable(
     roleId: text("role_id")
       .notNull()
       .references(() => roles.id),
-    emailVerifiedAt: integer("email_verified_at", { mode: "timestamp" }),
-    isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
-    lastLoginAt: integer("last_login_at", { mode: "timestamp" }),
+    emailVerifiedAt: timestamp("email_verified_at", { withTimezone: true }),
+    isActive: boolean("is_active").notNull().default(true),
+    lastLoginAt: timestamp("last_login_at", { withTimezone: true }),
     failedLoginCount: integer("failed_login_count").notNull().default(0),
-    lockedUntil: integer("locked_until", { mode: "timestamp" }),
-    createdAt: integer("created_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
-    updatedAt: integer("updated_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
+    lockedUntil: timestamp("locked_until", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => ({
     emailIdx: uniqueIndex("users_email_idx").on(table.email),
@@ -104,7 +93,7 @@ export const users = sqliteTable(
 // =========================================================================
 // user_permissions (direct grant/deny overrides)
 // =========================================================================
-export const userPermissions = sqliteTable(
+export const userPermissions = pgTable(
   "user_permissions",
   {
     userId: text("user_id")
@@ -113,11 +102,9 @@ export const userPermissions = sqliteTable(
     permissionId: text("permission_id")
       .notNull()
       .references(() => permissions.id, { onDelete: "cascade" }),
-    effect: text("effect", { enum: ["grant", "deny"] }).notNull(),
+    effect: text("effect").notNull(), // 'grant' | 'deny'
     grantedBy: text("granted_by").references(() => users.id),
-    createdAt: integer("created_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.userId, table.permissionId] }),
@@ -127,7 +114,7 @@ export const userPermissions = sqliteTable(
 // =========================================================================
 // sessions
 // =========================================================================
-export const sessions = sqliteTable(
+export const sessions = pgTable(
   "sessions",
   {
     id: text("id").primaryKey(),
@@ -137,12 +124,10 @@ export const sessions = sqliteTable(
     tokenHash: text("token_hash").notNull().unique(),
     ipAddress: text("ip_address"),
     userAgent: text("user_agent"),
-    expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
-    revokedAt: integer("revoked_at", { mode: "timestamp" }),
-    lastSeenAt: integer("last_seen_at", { mode: "timestamp" }),
-    createdAt: integer("created_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    revokedAt: timestamp("revoked_at", { withTimezone: true }),
+    lastSeenAt: timestamp("last_seen_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => ({
     userIdx: index("sessions_user_idx").on(table.userId),
@@ -154,20 +139,18 @@ export const sessions = sqliteTable(
 // =========================================================================
 // user_tokens (email verify / password reset / invite)
 // =========================================================================
-export const userTokens = sqliteTable(
+export const userTokens = pgTable(
   "user_tokens",
   {
     id: text("id").primaryKey(),
     userId: text("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
-    type: text("type", { enum: ["email_verify", "password_reset", "invite"] }).notNull(),
+    type: text("type").notNull(), // 'email_verify' | 'password_reset' | 'invite'
     tokenHash: text("token_hash").notNull().unique(),
-    expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
-    usedAt: integer("used_at", { mode: "timestamp" }),
-    createdAt: integer("created_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    usedAt: timestamp("used_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => ({
     userTypeIdx: index("user_tokens_user_type_idx").on(table.userId, table.type),
@@ -178,20 +161,18 @@ export const userTokens = sqliteTable(
 // =========================================================================
 // audit_logs
 // =========================================================================
-export const auditLogs = sqliteTable(
+export const auditLogs = pgTable(
   "audit_logs",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     userId: text("user_id").references(() => users.id),
     action: text("action").notNull(),
     entityType: text("entity_type"),
     entityId: text("entity_id"),
-    metadata: text("metadata", { mode: "json" }),
+    metadata: jsonb("metadata"),
     ipAddress: text("ip_address"),
     userAgent: text("user_agent"),
-    createdAt: integer("created_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => ({
     userIdx: index("audit_logs_user_idx").on(table.userId),
@@ -202,26 +183,22 @@ export const auditLogs = sqliteTable(
 );
 
 // =========================================================================
-// menus (dashboard navigation items, editable via UI)
+// menus (dashboard navigation, editable via UI)
 // =========================================================================
-export const menus = sqliteTable(
+export const menus = pgTable(
   "menus",
   {
     id: text("id").primaryKey(),
     key: text("key").notNull().unique(),
     label: text("label").notNull(),
     href: text("href").notNull(),
-    icon: text("icon").notNull(), // lucide icon name string, resolved via registry
-    requiredGroup: text("required_group"), // if null, any authed user sees it
-    parentId: text("parent_id"), // self-referencing; null = top-level
+    icon: text("icon").notNull(),
+    requiredGroup: text("required_group"),
+    parentId: text("parent_id"),
     sortOrder: integer("sort_order").notNull().default(0),
-    isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
-    createdAt: integer("created_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
-    updatedAt: integer("updated_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
+    isActive: boolean("is_active").notNull().default(true),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => ({
     sortIdx: index("menus_sort_idx").on(table.sortOrder),
@@ -231,25 +208,21 @@ export const menus = sqliteTable(
 );
 
 // =========================================================================
-// team_members (public-facing team on /about-us/our-team)
+// team_members
 // =========================================================================
-export const teamMembers = sqliteTable(
+export const teamMembers = pgTable(
   "team_members",
   {
     id: text("id").primaryKey(),
     fullName: text("full_name").notNull(),
-    role: text("role").notNull(), // job title, e.g. "Founder & CEO"
+    role: text("role").notNull(),
     bio: text("bio"),
     photoUrl: text("photo_url"),
     linkedinUrl: text("linkedin_url"),
     sortOrder: integer("sort_order").notNull().default(0),
-    isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
-    createdAt: integer("created_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
-    updatedAt: integer("updated_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
+    isActive: boolean("is_active").notNull().default(true),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => ({
     sortIdx: index("team_members_sort_idx").on(table.sortOrder),
@@ -260,7 +233,7 @@ export const teamMembers = sqliteTable(
 // =========================================================================
 // blog_categories
 // =========================================================================
-export const blogCategories = sqliteTable(
+export const blogCategories = pgTable(
   "blog_categories",
   {
     id: text("id").primaryKey(),
@@ -268,13 +241,9 @@ export const blogCategories = sqliteTable(
     slug: text("slug").notNull().unique(),
     description: text("description"),
     sortOrder: integer("sort_order").notNull().default(0),
-    isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
-    createdAt: integer("created_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
-    updatedAt: integer("updated_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
+    isActive: boolean("is_active").notNull().default(true),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => ({
     nameIdx: uniqueIndex("blog_categories_name_idx").on(table.name),
@@ -286,7 +255,7 @@ export const blogCategories = sqliteTable(
 // =========================================================================
 // blog_posts
 // =========================================================================
-export const blogPosts = sqliteTable(
+export const blogPosts = pgTable(
   "blog_posts",
   {
     id: text("id").primaryKey(),
@@ -298,19 +267,11 @@ export const blogPosts = sqliteTable(
     coverImageUrl: text("cover_image_url"),
     author: text("author"),
     readTimeMinutes: integer("read_time_minutes").notNull().default(5),
-    status: text("status", { enum: ["draft", "published"] })
-      .notNull()
-      .default("draft"),
-    isFeatured: integer("is_featured", { mode: "boolean" })
-      .notNull()
-      .default(false),
-    publishedAt: integer("published_at", { mode: "timestamp" }),
-    createdAt: integer("created_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
-    updatedAt: integer("updated_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
+    status: text("status").notNull().default("draft"), // 'draft' | 'published'
+    isFeatured: boolean("is_featured").notNull().default(false),
+    publishedAt: timestamp("published_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => ({
     slugIdx: uniqueIndex("blog_posts_slug_idx").on(table.slug),
@@ -322,9 +283,9 @@ export const blogPosts = sqliteTable(
 );
 
 // =========================================================================
-// our_company_page (singleton — one row with id='singleton')
+// our_company_page (singleton)
 // =========================================================================
-export const ourCompanyPage = sqliteTable("our_company_page", {
+export const ourCompanyPage = pgTable("our_company_page", {
   id: text("id").primaryKey(),
   storyEyebrow: text("story_eyebrow").notNull().default("Our Story"),
   storyHeading: text("story_heading").notNull(),
@@ -332,15 +293,13 @@ export const ourCompanyPage = sqliteTable("our_company_page", {
   storyBody: text("story_body").notNull(),
   estYear: text("est_year").notNull().default("2025"),
   storyImageUrl: text("story_image_url"),
-  updatedAt: integer("updated_at", { mode: "timestamp" })
-    .notNull()
-    .default(sql`(unixepoch())`),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
 // =========================================================================
 // our_company_clients
 // =========================================================================
-export const ourCompanyClients = sqliteTable(
+export const ourCompanyClients = pgTable(
   "our_company_clients",
   {
     id: text("id").primaryKey(),
@@ -348,13 +307,9 @@ export const ourCompanyClients = sqliteTable(
     logoUrl: text("logo_url"),
     websiteUrl: text("website_url"),
     sortOrder: integer("sort_order").notNull().default(0),
-    isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
-    createdAt: integer("created_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
-    updatedAt: integer("updated_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
+    isActive: boolean("is_active").notNull().default(true),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => ({
     sortIdx: index("our_company_clients_sort_idx").on(table.sortOrder),
@@ -365,19 +320,17 @@ export const ourCompanyClients = sqliteTable(
 // =========================================================================
 // mission_vision_page (singleton)
 // =========================================================================
-export const missionVisionPage = sqliteTable("mission_vision_page", {
+export const missionVisionPage = pgTable("mission_vision_page", {
   id: text("id").primaryKey(),
   missionText: text("mission_text").notNull(),
   visionText: text("vision_text").notNull(),
-  updatedAt: integer("updated_at", { mode: "timestamp" })
-    .notNull()
-    .default(sql`(unixepoch())`),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
 // =========================================================================
 // core_values
 // =========================================================================
-export const coreValues = sqliteTable(
+export const coreValues = pgTable(
   "core_values",
   {
     id: text("id").primaryKey(),
@@ -385,13 +338,9 @@ export const coreValues = sqliteTable(
     description: text("description").notNull(),
     icon: text("icon").notNull().default("Target"),
     sortOrder: integer("sort_order").notNull().default(0),
-    isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
-    createdAt: integer("created_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
-    updatedAt: integer("updated_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
+    isActive: boolean("is_active").notNull().default(true),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => ({
     sortIdx: index("core_values_sort_idx").on(table.sortOrder),
@@ -400,56 +349,43 @@ export const coreValues = sqliteTable(
 );
 
 // =========================================================================
-// contact_page (singleton — one row with id='singleton')
+// contact_page (singleton)
 // =========================================================================
-export const contactPage = sqliteTable("contact_page", {
+export const contactPage = pgTable("contact_page", {
   id: text("id").primaryKey(),
-  // Hero
   heroEyebrow: text("hero_eyebrow").notNull().default("Get In Touch"),
   heroHeading: text("hero_heading").notNull(),
   heroHeadingAccent: text("hero_heading_accent").notNull(),
   heroSubtitle: text("hero_subtitle").notNull(),
-  // Contact info
   phoneNumber: text("phone_number").notNull(),
   phoneHours: text("phone_hours"),
   locationLabel: text("location_label").notNull(),
   locationUrl: text("location_url"),
   emailAddress: text("email_address").notNull(),
   emailReplyNote: text("email_reply_note"),
-  // Map embed iframe src
   mapEmbedUrl: text("map_embed_url"),
-  // Social
   instagramUrl: text("instagram_url"),
   facebookUrl: text("facebook_url"),
   tiktokUrl: text("tiktok_url"),
   linkedinUrl: text("linkedin_url"),
-  // Quick help CTA
-  quickHelpHeading: text("quick_help_heading").notNull().default(
-    "Need Immediate Help?"
-  ),
+  quickHelpHeading: text("quick_help_heading").notNull().default("Need Immediate Help?"),
   whatsappUrl: text("whatsapp_url"),
-  updatedAt: integer("updated_at", { mode: "timestamp" })
-    .notNull()
-    .default(sql`(unixepoch())`),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
 // =========================================================================
-// contact_trust_points (collection for Why Brandghar on contact page)
+// contact_trust_points
 // =========================================================================
-export const contactTrustPoints = sqliteTable(
+export const contactTrustPoints = pgTable(
   "contact_trust_points",
   {
     id: text("id").primaryKey(),
     text: text("text").notNull(),
     icon: text("icon").notNull().default("Users"),
     sortOrder: integer("sort_order").notNull().default(0),
-    isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
-    createdAt: integer("created_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
-    updatedAt: integer("updated_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
+    isActive: boolean("is_active").notNull().default(true),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => ({
     sortIdx: index("contact_trust_points_sort_idx").on(table.sortOrder),
@@ -458,9 +394,9 @@ export const contactTrustPoints = sqliteTable(
 );
 
 // =========================================================================
-// leads (consultation requests submitted from public forms)
+// leads
 // =========================================================================
-export const leads = sqliteTable(
+export const leads = pgTable(
   "leads",
   {
     id: text("id").primaryKey(),
@@ -469,17 +405,13 @@ export const leads = sqliteTable(
     email: text("email"),
     service: text("service"),
     message: text("message"),
-    source: text("source", { enum: ["hero_landing", "contact_page"] })
-      .notNull()
-      .default("hero_landing"),
-    isRead: integer("is_read", { mode: "boolean" }).notNull().default(false),
-    readAt: integer("read_at", { mode: "timestamp" }),
+    source: text("source").notNull().default("hero_landing"), // 'hero_landing' | 'contact_page'
+    isRead: boolean("is_read").notNull().default(false),
+    readAt: timestamp("read_at", { withTimezone: true }),
     readBy: text("read_by").references(() => users.id),
     ipAddress: text("ip_address"),
     userAgent: text("user_agent"),
-    createdAt: integer("created_at", { mode: "timestamp" })
-      .notNull()
-      .default(sql`(unixepoch())`),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => ({
     isReadIdx: index("leads_is_read_idx").on(table.isRead),

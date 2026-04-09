@@ -2,6 +2,8 @@ import { asc, eq } from "drizzle-orm";
 import { db, contactPage, contactTrustPoints } from "@/db";
 import ContactClient from "./ContactClient";
 
+export const dynamic = "force-dynamic";
+
 const SINGLETON_ID = "singleton";
 
 export default async function ContactPublicPage() {

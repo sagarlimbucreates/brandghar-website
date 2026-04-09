@@ -48,7 +48,7 @@ export default async function EditBlogPostPage({
             category: post.category,
             coverImageUrl: post.coverImageUrl,
             readTimeMinutes: post.readTimeMinutes,
-            status: post.status,
+            status: post.status as "draft" | "published",
             isFeatured: post.isFeatured,
           }}
           categories={categories}

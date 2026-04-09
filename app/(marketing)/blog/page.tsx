@@ -2,6 +2,8 @@ import { asc, eq, desc } from "drizzle-orm";
 import { db, blogPosts, blogCategories } from "@/db";
 import BlogClient from "./BlogClient";
 
+export const dynamic = "force-dynamic";
+
 export default async function BlogPage() {
   const postRows = await db
     .select({

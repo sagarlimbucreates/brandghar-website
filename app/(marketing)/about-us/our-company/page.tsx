@@ -2,6 +2,8 @@ import { asc, eq } from "drizzle-orm";
 import { db, ourCompanyPage, ourCompanyClients } from "@/db";
 import OurCompanyClient from "./OurCompanyClient";
 
+export const dynamic = "force-dynamic";
+
 const SINGLETON_ID = "singleton";
 
 export default async function OurCompanyPublicPage() {

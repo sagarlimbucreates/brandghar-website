@@ -1,23 +1,33 @@
-import "server-only";
-import Database from "better-sqlite3";
-import { drizzle } from "drizzle-orm/better-sqlite3";
+import { Pool, neonConfig } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-serverless";
+import ws from "ws";
 import * as schema from "./schema";
-import path from "node:path";
 
-const DB_PATH = path.join(process.cwd(), "db", "brandghar.db");
-
-// Reuse a single connection across HMR reloads in dev.
-const globalForDb = globalThis as unknown as {
-  sqlite: Database.Database | undefined;
-};
-
-const sqlite = globalForDb.sqlite ?? new Database(DB_PATH);
-sqlite.pragma("journal_mode = WAL");
-sqlite.pragma("foreign_keys = ON");
-
-if (process.env.NODE_ENV !== "production") {
-  globalForDb.sqlite = sqlite;
+// Required for Node.js runtime (Vercel Node functions, local scripts, `next dev`).
+// Not used/required on the Edge runtime, where a native WebSocket exists.
+if (typeof WebSocket === "undefined") {
+  neonConfig.webSocketConstructor = ws;
 }
 
-export const db = drizzle(sqlite, { schema });
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) {
+  throw new Error("DATABASE_URL is not set");
+}
+
+// Reuse a single pool across HMR reloads in dev and across function invocations.
+const globalForDb = globalThis as unknown as {
+  neonPool: Pool | undefined;
+};
+
+const pool =
+  globalForDb.neonPool ??
+  new Pool({
+    connectionString,
+  });
+
+if (process.env.NODE_ENV !== "production") {
+  globalForDb.neonPool = pool;
+}
+
+export const db = drizzle(pool, { schema });
 export * from "./schema";

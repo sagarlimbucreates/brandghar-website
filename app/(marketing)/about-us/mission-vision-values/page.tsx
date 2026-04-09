@@ -2,6 +2,8 @@ import { asc, eq } from "drizzle-orm";
 import { db, missionVisionPage, coreValues } from "@/db";
 import MissionVisionClient from "./MissionVisionClient";
 
+export const dynamic = "force-dynamic";
+
 const SINGLETON_ID = "singleton";
 
 export default async function MissionVisionPublicPage() {
