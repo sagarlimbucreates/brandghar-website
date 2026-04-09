@@ -81,7 +81,7 @@ const services = [
 export default function Services() {
   return (
     <section id="services" className="bg-off-white py-20 md:py-28">
-      <div className="mx-auto px-6 md:px-12 lg:px-16">
+      <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20">
         {/* Header */}
         <div className="mb-14 text-center">
           <motion.p

@@ -119,19 +119,6 @@ export default function Hero() {
               modern and actually drive results.
             </motion.p>
 
-            {/* CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <a
-                href="#services"
-                className="inline-flex items-center gap-2 border-2 border-black text-black text-sm font-medium px-7 py-3 rounded-[4px] hover:bg-black hover:text-white transition-all duration-300"
-              >
-                View Services
-              </a>
-            </motion.div>
           </div>
 
           {/* Right column — contact form card */}
