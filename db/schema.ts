@@ -423,6 +423,54 @@ export const leads = pgTable(
 );
 
 // =========================================================================
+// services
+// =========================================================================
+export const services = pgTable(
+  "services",
+  {
+    id: text("id").primaryKey(),
+    slug: text("slug").notNull().unique(),
+    title: text("title").notNull(),
+    eyebrow: text("eyebrow").notNull().default("Our Service"),
+    heading: text("heading").notNull(),
+    headingAccent: text("heading_accent").notNull(),
+    description: text("description").notNull(),
+    secondaryDescription: text("secondary_description"),
+    heroImageUrl: text("hero_image_url"),
+    icon: text("icon").notNull().default("Briefcase"),
+    shortDescription: text("short_description").notNull(),
+    bullets: jsonb("bullets").$type<string[]>().notNull().default([]),
+    cardImageUrl: text("card_image_url"),
+    problems: jsonb("problems").$type<string[]>().notNull().default([]),
+    deliverables: jsonb("deliverables")
+      .$type<{ icon: string; title: string; items: string[] }[]>()
+      .notNull()
+      .default([]),
+    processSteps: jsonb("process_steps")
+      .$type<{ icon: string; title: string; step: string }[]>()
+      .notNull()
+      .default([]),
+    extraSections: jsonb("extra_sections")
+      .$type<Record<string, unknown>[]>()
+      .notNull()
+      .default([]),
+    ctaHeading: text("cta_heading").notNull(),
+    ctaDescription: text("cta_description"),
+    ctaButtonText: text("cta_button_text").notNull().default("Connect with Us"),
+    ctaButtonHref: text("cta_button_href").notNull().default("/#contact"),
+    sortOrder: integer("sort_order").notNull().default(0),
+    isActive: boolean("is_active").notNull().default(true),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => ({
+    slugIdx: uniqueIndex("services_slug_idx").on(table.slug),
+    sortIdx: index("services_sort_idx").on(table.sortOrder),
+    activeIdx: index("services_active_idx").on(table.isActive),
+  }),
+);
+
+// =========================================================================
 // Type exports
 // =========================================================================
 export type Role = typeof roles.$inferSelect;
@@ -449,3 +497,5 @@ export type ContactTrustPoint = typeof contactTrustPoints.$inferSelect;
 export type NewContactTrustPoint = typeof contactTrustPoints.$inferInsert;
 export type Lead = typeof leads.$inferSelect;
 export type NewLead = typeof leads.$inferInsert;
+export type Service = typeof services.$inferSelect;
+export type NewService = typeof services.$inferInsert;

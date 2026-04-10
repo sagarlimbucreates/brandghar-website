@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -13,20 +13,23 @@ const aboutSubmenu = [
   { label: "Our Team", href: "/about-us/our-team" },
 ];
 
-const serviceSubmenu = [
-  { label: "Social Media Mastery", href: "/services/social-media-mastery" },
-  { label: "Influencer Partnerships", href: "/services/influencer-partnerships" },
-  { label: "Strategic Ad Placements", href: "/services/strategic-ad-placements" },
-  { label: "Search Engine Optimization", href: "/services/search-engine-optimization" },
-  { label: "Brand Identity & Graphics Design", href: "/services/brand-identity-graphics-design" },
-  { label: "Website Development", href: "/services/website-development" },
-];
-
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [quoteOpen, setQuoteOpen] = useState(false);
+  const [serviceSubmenu, setServiceSubmenu] = useState<{ label: string; href: string }[]>([]);
+
+  useEffect(() => {
+    fetch("/api/services")
+      .then((r) => r.json())
+      .then((data: { slug: string; title: string }[]) =>
+        setServiceSubmenu(
+          data.map((s) => ({ label: s.title, href: `/services/${s.slug}` })),
+        ),
+      )
+      .catch(() => {});
+  }, []);
 
   const openQuote = () => {
     setMobileOpen(false);
