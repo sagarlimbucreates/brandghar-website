@@ -35,6 +35,7 @@ import {
   Star,
   Award,
   Sparkles,
+  MessageSquareQuote,
   type LucideIcon,
 } from "lucide-react";
 
@@ -75,6 +76,7 @@ export const ICON_REGISTRY = {
   Star,
   Award,
   Sparkles,
+  MessageSquareQuote,
 } as const satisfies Record<string, LucideIcon>;
 
 export type IconName = keyof typeof ICON_REGISTRY;

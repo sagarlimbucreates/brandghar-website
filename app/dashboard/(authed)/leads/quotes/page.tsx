@@ -1,9 +1,9 @@
-import { requirePermission } from "../../lib/rbac";
-import LeadsTable from "./_components/LeadsTable";
+import { requirePermission } from "../../../lib/rbac";
+import LeadsTable from "../_components/LeadsTable";
 
 type SearchParams = Promise<{ filter?: string; status?: string }>;
 
-export default async function LeadsPage({
+export default async function QuotesPage({
   searchParams,
 }: {
   searchParams: SearchParams;
@@ -14,12 +14,13 @@ export default async function LeadsPage({
   return (
     <LeadsTable
       user={me}
-      eyebrow="Pipeline"
-      title="All Leads"
-      subtitle="All consultation requests from every source."
+      source="navbar_cta"
+      eyebrow="Leads"
+      title="Get a Quote"
+      subtitle="Inquiries submitted via the Get a Quote modal."
       filter={filter === "unread" || filter === "read" ? filter : "all"}
       status={status ?? "all"}
-      basePath="/dashboard/leads"
+      basePath="/dashboard/leads/quotes"
     />
   );
 }

@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { db, leads } from "@/db";
 import { requirePermission, requireUser } from "../../lib/rbac";
 
@@ -35,14 +35,18 @@ export async function markLeadUnreadAction(fd: FormData) {
   revalidatePath(`/dashboard/leads/${id}`);
 }
 
-export async function markAllLeadsReadAction() {
+export async function markAllLeadsReadAction(fd: FormData) {
   await requirePermission("lead.edit");
   const me = await requireUser();
+  const source = fd.get("source") ? String(fd.get("source")) : null;
+
+  const conditions = [eq(leads.isRead, false)];
+  if (source) conditions.push(eq(leads.source, source));
 
   await db
     .update(leads)
     .set({ isRead: true, readAt: new Date(), readBy: me.id })
-    .where(eq(leads.isRead, false));
+    .where(and(...conditions));
 
   revalidatePath("/dashboard/leads");
 }
