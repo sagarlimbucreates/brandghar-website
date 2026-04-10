@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import { asc, eq, desc } from "drizzle-orm";
 import { db, blogPosts, blogCategories } from "@/db";
 import BlogClient from "./BlogClient";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Blog",
+  description: "Insights, tips, and strategies on digital marketing, SEO, branding, and social media from the Brandghar team.",
+  alternates: { canonical: "/blog" },
+};
 
 export default async function BlogPage() {
   const postRows = await db

@@ -107,7 +107,7 @@ export default function OurCompanyClient({
                   alt="The Brandghar team"
                   fill
                   className="object-cover"
-                  unoptimized
+
                 />
                 <div className="absolute bottom-0 left-0 w-20 h-20 bg-accent/90 flex items-center justify-center">
                   <span className="text-white font-mono text-lg font-medium">
@@ -173,7 +173,7 @@ export default function OurCompanyClient({
                     width={120}
                     height={120}
                     className="w-full h-full object-contain"
-                    unoptimized
+  
                   />
                 ) : (
                   <span className="text-xs text-text-muted font-sans text-center px-2">

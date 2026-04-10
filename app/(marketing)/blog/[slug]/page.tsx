@@ -1,13 +1,45 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { and, eq, ne, desc } from "drizzle-orm";
 import { ChevronRight, ArrowLeft, ImageIcon, Clock, Calendar } from "lucide-react";
 import { db, blogPosts } from "@/db";
+import { BlogPostingJsonLd, BreadcrumbJsonLd } from "@/app/components/JsonLd";
 
 export const dynamic = "force-dynamic";
 
 type Params = Promise<{ slug: string }>;
+
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const { slug } = await params;
+  const rows = await db
+    .select({ title: blogPosts.title, excerpt: blogPosts.excerpt, coverImageUrl: blogPosts.coverImageUrl })
+    .from(blogPosts)
+    .where(and(eq(blogPosts.slug, slug), eq(blogPosts.status, "published")))
+    .limit(1);
+  const post = rows[0];
+  if (!post) return {};
+
+  return {
+    title: post.title,
+    description: post.excerpt,
+    alternates: { canonical: `/blog/${slug}` },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: "article",
+      url: `/blog/${slug}`,
+      ...(post.coverImageUrl ? { images: [{ url: post.coverImageUrl }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      ...(post.coverImageUrl ? { images: [post.coverImageUrl] } : {}),
+    },
+  };
+}
 
 export default async function BlogPostPage({ params }: { params: Params }) {
   const { slug } = await params;
@@ -61,6 +93,22 @@ export default async function BlogPostPage({ params }: { params: Params }) {
 
   return (
     <>
+      <BlogPostingJsonLd
+        title={post.title}
+        description={post.excerpt}
+        url={`/blog/${post.slug}`}
+        image={post.coverImageUrl}
+        datePublished={(post.publishedAt ?? post.createdAt).toISOString()}
+        dateModified={post.updatedAt.toISOString()}
+        author={post.author}
+      />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Blog", href: "/blog" },
+          { name: post.title, href: `/blog/${post.slug}` },
+        ]}
+      />
       {/* Breadcrumb */}
       <div className="bg-off-white border-b border-border">
         <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20 py-4">
@@ -131,7 +179,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                 alt={post.title}
                 fill
                 className="object-cover"
-                unoptimized
                 priority
               />
             </div>
@@ -185,8 +232,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                         width={400}
                         height={250}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        unoptimized
-                      />
+                              />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <ImageIcon size={24} className="text-text-muted/30" />

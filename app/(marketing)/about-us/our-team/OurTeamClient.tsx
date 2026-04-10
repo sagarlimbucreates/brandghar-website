@@ -141,7 +141,7 @@ export default function OurTeamClient({
                         alt={member.fullName}
                         fill
                         className="object-cover"
-                        unoptimized
+
                       />
                     ) : (
                       <User

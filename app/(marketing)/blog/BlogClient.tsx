@@ -153,7 +153,7 @@ export default function BlogClient({
                     width={800}
                     height={500}
                     className="w-full h-full object-cover"
-                    unoptimized
+
                   />
                 ) : (
                   <ImageIcon size={32} className="text-text-muted/30" />
@@ -237,7 +237,7 @@ export default function BlogClient({
                         width={400}
                         height={250}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        unoptimized
+    
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">

@@ -1,3 +1,5 @@
+export const revalidate = 3600;
+
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { db, services } from "@/db";

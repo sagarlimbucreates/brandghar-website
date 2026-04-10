@@ -67,9 +67,9 @@ export default function MissionVisionClient({
               transition={{ ...fadeUp.transition, delay: 0.1 }}
             >
               <div className="border-l-[3px] border-accent pl-6">
-                <h1 className="text-3xl md:text-4xl lg:text-[2.5rem] font-sans font-bold text-text-primary leading-[1.12] tracking-tight mb-6">
+                <h2 className="text-3xl md:text-4xl lg:text-[2.5rem] font-sans font-bold text-text-primary leading-[1.12] tracking-tight mb-6">
                   Our Mission
-                </h1>
+                </h2>
                 <p className="text-text-secondary leading-[1.7] font-sans text-base md:text-lg">
                   {mission}
                 </p>

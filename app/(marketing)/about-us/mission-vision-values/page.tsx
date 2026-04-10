@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import { asc, eq } from "drizzle-orm";
 import { db, missionVisionPage, coreValues } from "@/db";
 import MissionVisionClient from "./MissionVisionClient";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Mission, Vision & Core Values",
+  description: "Discover Brandghar's mission, vision, and the core values that drive our digital marketing work in Nepal.",
+  alternates: { canonical: "/about-us/mission-vision-values" },
+};
 
 const SINGLETON_ID = "singleton";
 

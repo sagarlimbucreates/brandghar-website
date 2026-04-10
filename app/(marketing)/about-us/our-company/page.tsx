@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import { asc, eq } from "drizzle-orm";
 import { db, ourCompanyPage, ourCompanyClients } from "@/db";
 import OurCompanyClient from "./OurCompanyClient";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Our Company",
+  description: "Learn about Brandghar — a digital marketing agency in Nepal dedicated to growing brands through strategy, creativity, and performance.",
+  alternates: { canonical: "/about-us/our-company" },
+};
 
 const SINGLETON_ID = "singleton";
 

@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import { asc, eq } from "drizzle-orm";
 import { db, contactPage, contactTrustPoints } from "@/db";
 import ContactClient from "./ContactClient";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Contact Us",
+  description: "Get in touch with Brandghar — your digital marketing partner in Nepal. Call, email, or visit us.",
+  alternates: { canonical: "/contact" },
+};
 
 const SINGLETON_ID = "singleton";
 
