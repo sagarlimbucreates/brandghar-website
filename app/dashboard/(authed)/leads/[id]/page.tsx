@@ -11,14 +11,28 @@ import {
 } from "lucide-react";
 import { db, leads, users } from "@/db";
 import { requirePermission, hasPermission } from "../../../lib/rbac";
-import { PageHeader, Card, Button } from "../../../lib/ui";
+import { PageHeader, Card, Button, Badge } from "../../../lib/ui";
 import {
   markLeadReadAction,
   markLeadUnreadAction,
+  updateLeadStatusAction,
   deleteLeadAction,
 } from "../actions";
 
 type Params = Promise<{ id: string }>;
+
+const STATUS_OPTIONS = [
+  { value: "pending", label: "Pending", tone: "accent" as const },
+  { value: "follow_up", label: "Follow Up", tone: "muted" as const },
+  { value: "re_follow", label: "Re-Follow", tone: "muted" as const },
+  { value: "converted", label: "Converted", tone: "success" as const },
+];
+
+const SOURCE_LABELS: Record<string, string> = {
+  hero_landing: "Landing page hero form",
+  contact_page: "Contact page form",
+  navbar_cta: "Get a Quote modal",
+};
 
 export default async function LeadDetailPage({ params }: { params: Params }) {
   const { id } = await params;
@@ -33,6 +47,7 @@ export default async function LeadDetailPage({ params }: { params: Params }) {
       service: leads.service,
       message: leads.message,
       source: leads.source,
+      status: leads.status,
       isRead: leads.isRead,
       readAt: leads.readAt,
       createdAt: leads.createdAt,
@@ -70,6 +85,8 @@ export default async function LeadDetailPage({ params }: { params: Params }) {
       minute: "2-digit",
       hour12: true,
     });
+
+  const currentMeta = STATUS_OPTIONS.find((s) => s.value === lead.status) ?? STATUS_OPTIONS[0];
 
   return (
     <div className="max-w-2xl space-y-6">
@@ -131,9 +148,7 @@ export default async function LeadDetailPage({ params }: { params: Params }) {
                 Submitted from
               </p>
               <p className="text-sm font-sans text-[#1A1A1A]">
-                {lead.source === "hero_landing"
-                  ? "Landing page hero form"
-                  : "Contact page form"}
+                {SOURCE_LABELS[lead.source] ?? lead.source}
               </p>
             </div>
           </div>
@@ -171,10 +186,41 @@ export default async function LeadDetailPage({ params }: { params: Params }) {
         )}
       </Card>
 
-      {/* Status */}
+      {/* Lead Status */}
       <Card className="p-8">
         <h2 className="text-sm font-sans font-bold text-[#1A1A1A] mb-5">
-          Status
+          Lead Status
+        </h2>
+        <div className="mb-5">
+          <Badge tone={currentMeta.tone}>{currentMeta.label}</Badge>
+        </div>
+        {canEdit && (
+          <div className="flex items-center gap-2 flex-wrap">
+            {STATUS_OPTIONS.map((opt) => (
+              <form key={opt.value} action={updateLeadStatusAction}>
+                <input type="hidden" name="id" value={lead.id} />
+                <input type="hidden" name="status" value={opt.value} />
+                <button
+                  type="submit"
+                  disabled={lead.status === opt.value}
+                  className={`px-4 py-2 rounded-[4px] text-xs font-sans font-semibold transition-colors ${
+                    lead.status === opt.value
+                      ? "bg-[#1A1A1A] text-white cursor-default"
+                      : "bg-white border border-[#E5E5E5] text-[#555] hover:text-[#E02020] hover:border-[#E02020]/30"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              </form>
+            ))}
+          </div>
+        )}
+      </Card>
+
+      {/* Read status */}
+      <Card className="p-8">
+        <h2 className="text-sm font-sans font-bold text-[#1A1A1A] mb-5">
+          Read Status
         </h2>
         <div className="mb-5">
           <p className="text-sm font-sans text-[#555]">

@@ -405,7 +405,8 @@ export const leads = pgTable(
     email: text("email"),
     service: text("service"),
     message: text("message"),
-    source: text("source").notNull().default("hero_landing"), // 'hero_landing' | 'contact_page'
+    source: text("source").notNull().default("hero_landing"), // 'hero_landing' | 'contact_page' | 'navbar_cta'
+    status: text("status").notNull().default("pending"), // 'pending' | 'follow_up' | 're_follow' | 'converted'
     isRead: boolean("is_read").notNull().default(false),
     readAt: timestamp("read_at", { withTimezone: true }),
     readBy: text("read_by").references(() => users.id),
@@ -415,6 +416,7 @@ export const leads = pgTable(
   },
   (table) => ({
     isReadIdx: index("leads_is_read_idx").on(table.isRead),
+    statusIdx: index("leads_status_idx").on(table.status),
     createdIdx: index("leads_created_idx").on(table.createdAt),
     sourceIdx: index("leads_source_idx").on(table.source),
   })

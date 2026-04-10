@@ -47,6 +47,23 @@ export async function markAllLeadsReadAction() {
   revalidatePath("/dashboard/leads");
 }
 
+const VALID_STATUSES = ["pending", "follow_up", "re_follow", "converted"] as const;
+
+export async function updateLeadStatusAction(fd: FormData) {
+  await requirePermission("lead.edit");
+  const id = String(fd.get("id") ?? "");
+  const status = String(fd.get("status") ?? "");
+  if (!id || !VALID_STATUSES.includes(status as (typeof VALID_STATUSES)[number])) return;
+
+  await db
+    .update(leads)
+    .set({ status })
+    .where(eq(leads.id, id));
+
+  revalidatePath("/dashboard/leads");
+  revalidatePath(`/dashboard/leads/${id}`);
+}
+
 export async function deleteLeadAction(fd: FormData) {
   await requirePermission("lead.delete");
   const id = String(fd.get("id") ?? "");
