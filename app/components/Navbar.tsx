@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown } from "lucide-react";
+import LeadModal from "./LeadModal";
 
 const aboutSubmenu = [
   { label: "Our Company", href: "/about-us/our-company" },
@@ -25,6 +26,12 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [quoteOpen, setQuoteOpen] = useState(false);
+
+  const openQuote = () => {
+    setMobileOpen(false);
+    setQuoteOpen(true);
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-white font-sans shadow-[0_1px_12px_rgba(0,0,0,0.06)]">
@@ -107,12 +114,13 @@ export default function Navbar() {
         </div>
 
         {/* CTA */}
-        <Link
-          href="/contact"
+        <button
+          type="button"
+          onClick={openQuote}
           className="hidden md:inline-block bg-accent text-white text-sm font-medium px-7 py-3 rounded-[4px] hover:bg-accent-hover transition-colors duration-300"
         >
           Get a Quote
-        </Link>
+        </button>
 
         {/* Mobile toggle */}
         <button
@@ -218,17 +226,19 @@ export default function Navbar() {
               <Link href="/contact" className="py-2.5 text-black hover:text-accent transition-colors font-normal" onClick={() => setMobileOpen(false)}>
                 Contact
               </Link>
-              <Link
-                href="/contact"
+              <button
+                type="button"
+                onClick={openQuote}
                 className="bg-accent text-white text-sm font-medium px-6 py-3 text-center rounded-[4px] hover:bg-accent-hover transition-colors mt-3"
-                onClick={() => setMobileOpen(false)}
               >
                 Get a Quote
-              </Link>
+              </button>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      <LeadModal open={quoteOpen} onClose={() => setQuoteOpen(false)} />
     </nav>
   );
 }
